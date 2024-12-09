@@ -1,0 +1,14 @@
+**/.vs
+*.user
+*.suo
+*.sln.docstates
+**/bin/
+**/obj/
+*.pdb
+**/packages/
+*.log
+*.tmp
+*.sln
+appsettings.Development.json
+.vs/
+.mp4
