@@ -150,6 +150,7 @@
             this.btnMultiplica.TabIndex = 12;
             this.btnMultiplica.Text = "x";
             this.btnMultiplica.UseVisualStyleBackColor = true;
+            this.btnMultiplica.Click += new System.EventHandler(this.btnMultiplica_Click);
             // 
             // btn4
             // 
