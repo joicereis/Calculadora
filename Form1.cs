@@ -103,34 +103,52 @@ namespace Calculadora
             txtOperacaoEmCurso.Clear();
             this.txtResultado.Clear();
             valorAcumulado = 0;
-
         }
 
         private void btnMultiplica_Click(object sender, EventArgs e)
         {
-           
+            if (txtOperacaoEmCurso.Text == "" & this.txtResultado.Text != "")
+            {
+                operacao = "x";
+                valorAcumulado = nroDigitado;
+                txtOperacaoEmCurso.Text = $"{valorAcumulado.ToString()} {operacao}";
+                this.txtResultado.Clear();
+            }
+            else if (txtOperacaoEmCurso.Text != "" & this.txtResultado.Text == "")
+            {
+                operacao = "x";
+                txtOperacaoEmCurso.Text = $"{valorAcumulado.ToString()} {operacao}";
+            }
+            else
+            {
+                //se já havi um expressão sendo construída antes, el deve ser mantida
+                calcularOperacaoEmCurso(valorAcumulado, operacao);
+                this.txtResultado.Clear();
+                operacao = "x";
+                txtOperacaoEmCurso.Text = $"{valorAcumulado.ToString()} {operacao}";
+            }
         }
 
         private void btnSoma_Click(object sender, EventArgs e)
         {
-            
             if (txtOperacaoEmCurso.Text == "" & this.txtResultado.Text != "")
             {
                 operacao = "+";
                 valorAcumulado = nroDigitado;
-                txtOperacaoEmCurso.Text = $"{valorAcumulado.ToString()} + ";
+                txtOperacaoEmCurso.Text = $"{valorAcumulado.ToString()} {operacao}";
                 this.txtResultado.Clear();
             }
-
             else if (txtOperacaoEmCurso.Text != "" & this.txtResultado.Text == "")
             {
                 operacao = "+";
-                //valorAcumulado = nroDigitado;
+                txtOperacaoEmCurso.Text = $"{valorAcumulado.ToString()} {operacao}";
             }
             else
             {
-                operacao = "+";
                 calcularOperacaoEmCurso(valorAcumulado, operacao);
+                this.txtResultado.Clear();
+                operacao = "+";
+                txtOperacaoEmCurso.Text = $"{valorAcumulado.ToString()} {operacao}";
             }
         }
 
@@ -140,10 +158,13 @@ namespace Calculadora
                 {
                     case "+":
                     valorAcumulado += nroDigitado;
-                    txtOperacaoEmCurso.Text = $"{valorAcumulado.ToString()} {operacao} ";
-                    this.txtResultado.Clear();
                     break;
-;                }
+
+                    case "x":
+                    valorAcumulado *= nroDigitado;
+                    break;
+                    ;               }
+
         }
     }
 }
