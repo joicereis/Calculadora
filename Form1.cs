@@ -152,19 +152,57 @@ namespace Calculadora
             }
         }
 
+        private void btnSubtrai_Click(object sender, EventArgs e)
+        {
+            if (txtOperacaoEmCurso.Text == "" & this.txtResultado.Text != "")
+            {
+                operacao = "-";
+                valorAcumulado = nroDigitado;
+                txtOperacaoEmCurso.Text = $"{valorAcumulado.ToString()} {operacao}";
+                this.txtResultado.Clear();
+            }
+            else if (txtOperacaoEmCurso.Text != "" & this.txtResultado.Text == "")
+            {
+                operacao = "-";
+                txtOperacaoEmCurso.Text = $"{valorAcumulado.ToString()} {operacao}";
+            }
+            else
+            {
+                //se já havi um expressão sendo construída antes, el deve ser mantida
+                calcularOperacaoEmCurso(valorAcumulado, operacao);
+                this.txtResultado.Clear();
+                operacao = "-";
+                txtOperacaoEmCurso.Text = $"{valorAcumulado.ToString()} {operacao}";
+            }
+        }
+
+        private void btnDivide_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void calcularOperacaoEmCurso(double valorEmCurso, string operacao)
         {
-                switch (operacao)
-                {
-                    case "+":
+            switch (operacao)
+            {
+                case "+":
                     valorAcumulado += nroDigitado;
                     break;
 
-                    case "x":
+                case "x":
                     valorAcumulado *= nroDigitado;
                     break;
-                    ;               }
 
+                case "-":
+                    valorAcumulado *= nroDigitado;
+                    break;
+
+                    /*
+                case "/":
+                    valorAcumulado *= nroDigitado;
+                    break;
+                    */
+            }
         }
     }
 }

@@ -111,6 +111,7 @@
             this.btnDivide.TabIndex = 8;
             this.btnDivide.Text = "/";
             this.btnDivide.UseVisualStyleBackColor = true;
+            this.btnDivide.Click += new System.EventHandler(this.btnDivide_Click);
             // 
             // btn7
             // 
@@ -190,6 +191,7 @@
             this.btnSubtrai.TabIndex = 16;
             this.btnSubtrai.Text = "-";
             this.btnSubtrai.UseVisualStyleBackColor = true;
+            this.btnSubtrai.Click += new System.EventHandler(this.btnSubtrai_Click);
             // 
             // btn1
             // 
