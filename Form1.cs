@@ -13,23 +13,16 @@ namespace Calculadora
 {
     public partial class frmCalculadora : Form
     {
-        double nroDigitado= 0;
-        double valorAcumulado = 0, segundoValor = 0;
+        string[] vetCalculo = new string[4]; //vetor das operacoes acumuladas
+        string nroDigitado = "";
+        double valorUM = 0.0; double valorDois = 0.0;
         string operacao = "";
-        string expressao = "";
+
+        double valorAcumulado = 0;
 
         public frmCalculadora()
         {
             InitializeComponent();
-        }
-        private string Dividir(decimal primeiroValor, decimal segundoValor)
-        {
-            if (segundoValor == 0)
-            {
-                return "Não é possível dividir por zero.";
-            }
-
-            return (primeiroValor / segundoValor).ToString();
         }
         private void btnVirgula_Click(object sender, EventArgs e)
         {
@@ -76,8 +69,6 @@ namespace Calculadora
             acumularValoresDigitados(this.btn9.Text);
         }
 
-        /*PROBLEMAS COM ESSA VALIAÇÃO - SE O NRO DIGITADO JÁ POSSUI UMA VIRGULA, NÃO DEVE SER ADICIONADO OUTRA.
-        CASO CONTRARIO, A VIRGULA DEVE SER ADICIONADA À STRING*/
         private void acumularValoresDigitados(string valorDigitado)
         {
             if (valorDigitado == ",")
@@ -85,127 +76,157 @@ namespace Calculadora
                 if (this.txtResultado.Text.Contains(valorDigitado))
                 {
                     this.txtResultado.Text += "";
-                    //nroDigitado = Convert.ToDouble(this.txtResultado.Text);
                 }
                 else
                     this.txtResultado.Text += ",";
             }
             else
-            {
                 this.txtResultado.Text += valorDigitado;
-            }
-            nroDigitado = Convert.ToDouble(this.txtResultado.Text);
-            //return nroDigitado;
+            nroDigitado = this.txtResultado.Text;
+            this.txtResultado.Clear();
         }
 
         private void btnClear_Click(object sender, EventArgs e)
         {
-            txtOperacaoEmCurso.Clear();
+            limparPosicoesVetCalculo(vetCalculo);
+            this.txtOperacaoEmCurso.Clear();
             this.txtResultado.Clear();
             valorAcumulado = 0;
+            nroDigitado = "";
+            valorUM = 0.0;
+            valorDois = 0.0;
+            operacao = "";
+        }
+        //12/12 - noite
+        private void btnSoma_Click(object sender, EventArgs e)
+        {
+            operacao = "+";
+            preencherElementosDoVetor(operacao, vetCalculo);
+            preencherTxtOperacaoEmCurso();
+        }
+
+        //12/12 - noite
+        private void btnSubtrai_Click(object sender, EventArgs e)
+        {
+            operacao = "-";
+            preencherElementosDoVetor(operacao, vetCalculo);
+            preencherTxtOperacaoEmCurso();
         }
 
         private void btnMultiplica_Click(object sender, EventArgs e)
         {
-            if (txtOperacaoEmCurso.Text == "" & this.txtResultado.Text != "")
-            {
-                operacao = "x";
-                valorAcumulado = nroDigitado;
-                txtOperacaoEmCurso.Text = $"{valorAcumulado.ToString()} {operacao}";
-                this.txtResultado.Clear();
-            }
-            else if (txtOperacaoEmCurso.Text != "" & this.txtResultado.Text == "")
-            {
-                operacao = "x";
-                txtOperacaoEmCurso.Text = $"{valorAcumulado.ToString()} {operacao}";
-            }
-            else
-            {
-                //se já havi um expressão sendo construída antes, el deve ser mantida
-                calcularOperacaoEmCurso(valorAcumulado, operacao);
-                this.txtResultado.Clear();
-                operacao = "x";
-                txtOperacaoEmCurso.Text = $"{valorAcumulado.ToString()} {operacao}";
-            }
+            operacao = "*";
+            preencherElementosDoVetor(operacao, vetCalculo);
+            preencherTxtOperacaoEmCurso();
         }
-
-        private void btnSoma_Click(object sender, EventArgs e)
-        {
-            if (txtOperacaoEmCurso.Text == "" & this.txtResultado.Text != "")
-            {
-                operacao = "+";
-                valorAcumulado = nroDigitado;
-                txtOperacaoEmCurso.Text = $"{valorAcumulado.ToString()} {operacao}";
-                this.txtResultado.Clear();
-            }
-            else if (txtOperacaoEmCurso.Text != "" & this.txtResultado.Text == "")
-            {
-                operacao = "+";
-                txtOperacaoEmCurso.Text = $"{valorAcumulado.ToString()} {operacao}";
-            }
-            else
-            {
-                calcularOperacaoEmCurso(valorAcumulado, operacao);
-                this.txtResultado.Clear();
-                operacao = "+";
-                txtOperacaoEmCurso.Text = $"{valorAcumulado.ToString()} {operacao}";
-            }
-        }
-
-        private void btnSubtrai_Click(object sender, EventArgs e)
-        {
-            if (txtOperacaoEmCurso.Text == "" & this.txtResultado.Text != "")
-            {
-                operacao = "-";
-                valorAcumulado = nroDigitado;
-                txtOperacaoEmCurso.Text = $"{valorAcumulado.ToString()} {operacao}";
-                this.txtResultado.Clear();
-            }
-            else if (txtOperacaoEmCurso.Text != "" & this.txtResultado.Text == "")
-            {
-                operacao = "-";
-                txtOperacaoEmCurso.Text = $"{valorAcumulado.ToString()} {operacao}";
-            }
-            else
-            {
-                //se já havi um expressão sendo construída antes, el deve ser mantida
-                calcularOperacaoEmCurso(valorAcumulado, operacao);
-                this.txtResultado.Clear();
-                operacao = "-";
-                txtOperacaoEmCurso.Text = $"{valorAcumulado.ToString()} {operacao}";
-            }
-        }
-
         private void btnDivide_Click(object sender, EventArgs e)
         {
-
+            operacao = "/";
+            preencherElementosDoVetor(operacao, vetCalculo);
+            preencherTxtOperacaoEmCurso();
         }
 
-        private void calcularOperacaoEmCurso(double valorEmCurso, string operacao)
+        //12/12 - noite
+        private void preencherElementosDoVetor(string operacao, string[] vetCalculo)
         {
-            switch (operacao)
+            if (vetCalculo[0] == "")
+            {
+                vetCalculo[0] = nroDigitado;
+                vetCalculo[1] = operacao;
+                nroDigitado = "";
+            }
+            else if (vetCalculo[2] == "")
+            {
+                if (nroDigitado == "")
+                {
+                    vetCalculo[1] = operacao;
+                }
+                else
+                {
+                    vetCalculo[2] = nroDigitado;
+                    vetCalculo[3] = operacao;
+                    nroDigitado = "";
+                    calcularOperacaoEmCurso(vetCalculo);
+                }
+            }
+        }
+
+
+        //12/12 - noite
+        private void calcularOperacaoEmCurso(string[] vetCalculo)
+        {
+            double valorUM = Convert.ToDouble(vetCalculo[0]);
+            string operacaoEmCurso = vetCalculo[1];
+            double valorDois = Convert.ToDouble(vetCalculo[2]);
+            string resultado = "";
+
+            switch (operacaoEmCurso)
             {
                 case "+":
-                    valorAcumulado += nroDigitado;
-                    break;
-
-                case "x":
-                    valorAcumulado *= nroDigitado;
+                    resultado = (valorUM + valorDois).ToString();
+                    gravarHistorico(vetCalculo, resultado);
+                    reordenarVetor(resultado, vetCalculo);
                     break;
 
                 case "-":
-                    valorAcumulado *= nroDigitado;
+                    resultado = (valorUM - valorDois).ToString();
+                    gravarHistorico(vetCalculo, resultado);
+                    reordenarVetor(resultado, vetCalculo);
                     break;
 
-                    /*
-                case "/":
-                    valorAcumulado *= nroDigitado;
+                case "*":
+                    resultado = (valorUM * valorDois).ToString();
+                    gravarHistorico(vetCalculo, resultado);
+                    reordenarVetor(resultado, vetCalculo);
                     break;
-                    */
+
+                case "/":
+                    resultado = validaDivisaoPorZero(valorUM, valorDois);
+                    gravarHistorico(vetCalculo, resultado);
+                    limparPosicoesVetCalculo(vetCalculo);
+                    this.txtOperacaoEmCurso.Clear();
+                    this.txtResultado.Clear();
+                    this.txtResultado.Text = resultado.ToString();
+                    break;
             }
+
+
+        }
+
+        //12/12 - noite
+        private void gravarHistorico(string[] vetCalculo, string resultado)
+        {
+            string ultimaOperacao = $"{vetCalculo[0]} {vetCalculo[1]} {vetCalculo[2]} = {resultado}";
+            List<string> listaHistorico = new List<string>();
+            listaHistorico.Add(ultimaOperacao);
+        }
+
+        //12/12 - noite
+        private void reordenarVetor(string resultado, string[] vetCalculo)
+        {
+            vetCalculo[0] =  resultado;
+            vetCalculo[1] =  vetCalculo[3];
+            vetCalculo[2] = "";
+            vetCalculo[3] = "";
+        }
+
+        private void limparPosicoesVetCalculo(string[] vetCalculo)
+        {
+            for (int index = 0; index < vetCalculo.Length; index++)
+                vetCalculo[index] = "";
+        }
+
+        private void preencherTxtOperacaoEmCurso()
+        {
+            this.txtOperacaoEmCurso.Text = $"{vetCalculo[0]} {vetCalculo[1]}";
+        }
+
+        private string validaDivisaoPorZero(double valorUM, double valorDois)
+        {
+            if(valorDois == 0)
+                return "Não é possível divisão por zero";
+            else
+                return (valorUM / valorDois).ToString();
         }
     }
 }
-
-// textBox com propriedades multilines
-
