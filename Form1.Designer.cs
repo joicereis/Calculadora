@@ -270,6 +270,7 @@
             this.btnResultado.TabIndex = 24;
             this.btnResultado.Text = "=";
             this.btnResultado.UseVisualStyleBackColor = true;
+            this.btnResultado.Click += new System.EventHandler(this.btnResultado_Click);
             // 
             // btnPorcento
             // 
