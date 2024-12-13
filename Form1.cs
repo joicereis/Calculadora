@@ -19,7 +19,11 @@ namespace Calculadora
         double valorUM = 0.0; double valorDois = 0.0;
         string operacao = "";
 
-        double valorAcumulado = 0;
+        //double valorAcumulado = 0;
+
+        string ultimaOperacao = "";
+        List<string> listaHistorico = new List<string>();
+        string historico = "";
 
         public frmCalculadora()
         {
@@ -92,7 +96,7 @@ namespace Calculadora
             limparPosicoesVetCalculo(vetCalculo);
             this.txtOperacaoEmCurso.Clear();
             this.txtResultado.Clear();
-            valorAcumulado = 0;
+            //valorAcumulado = 0;
             nroDigitado = "";
             valorUM = 0.0;
             valorDois = 0.0;
@@ -134,6 +138,25 @@ namespace Calculadora
             preencherTxtOperacaoEmCurso();
         }
 
+        private void btnFracao_Click(object sender, EventArgs e)
+        {
+            operacao = "1/x";
+        }
+
+        private void btnPotencia_Click(object sender, EventArgs e)
+        {
+            operacao = "x²";
+        }
+
+        private void btnRaizQuadrada_Click(object sender, EventArgs e)
+        {
+            operacao = "raiz";
+        }
+        private void btnHistorico_Click(object sender, EventArgs e)
+        {
+            exibirHistorico();
+        }
+
         //12/12
         private void preencherElementosDoVetor(string operacao, string[] vetCalculo)
         {
@@ -141,6 +164,11 @@ namespace Calculadora
             {
                 vetCalculo[0] = nroDigitado;
                 vetCalculo[1] = operacao;
+                if (operacao == "1/x" || operacao == "x²" || operacao == "raiz")
+                {
+                    calcularOperacaoEmCurso(vetCalculo);
+                }
+
                 limparAcumulo();
             }
             else if (vetCalculo[0] != "" & vetCalculo[2] == "" & operacao != "=")
@@ -165,7 +193,7 @@ namespace Calculadora
                     vetCalculo[3] = operacao;
                     calcularOperacaoEmCurso(vetCalculo);
                     limparAcumulo();
-                    vetCalculo[1] = "";
+                    //vetCalculo[1] = "";
                 }
             }          
         }
@@ -201,6 +229,27 @@ namespace Calculadora
                 case "/":
                     validaDivisaoPorZero(vetCalculo, valorUM, valorDois);
                     break;
+
+                case "1/x":
+                    if(valorUM == 0)
+                    {
+                        resultado = "Não é possível divisão por zero";
+                        gravarHistorico(vetCalculo, resultado);
+                        limparPosicoesVetCalculo(vetCalculo);
+                        this.txtOperacaoEmCurso.Clear();
+                        this.txtResultado.Clear();
+                        this.txtResultado.Text = resultado.ToString();
+                    }else
+                        resultado = (1/valorUM).ToString();
+                    break;
+
+                case "x²":
+                    resultado = Math.Pow(valorUM, 2).ToString();
+                    break;
+
+                case "raiz":
+                    resultado = Math.Sqrt(valorUM).ToString();
+                    break;
             }
             operacao = "";
         }
@@ -208,11 +257,19 @@ namespace Calculadora
         //12/12
         private void gravarHistorico(string[] vetCalculo, string resultado)
         {
-            string ultimaOperacao = $"{vetCalculo[0]} {vetCalculo[1]} {vetCalculo[2]} = {resultado}";
-            List<string> listaHistorico = new List<string>();
-            listaHistorico.Add(ultimaOperacao);
+            ultimaOperacao = $"{vetCalculo[0]} {vetCalculo[1]} {vetCalculo[2]} = {resultado}";
+            listaHistorico.Add(ultimaOperacao);            
         }
-
+        private void exibirHistorico()
+        {
+            foreach (string n in listaHistorico)
+            {
+                //ajustar exibição de linhas de historico
+                historico += $"{n}       ";
+            }
+            MessageBox.Show(historico);
+            historico = "";
+        }
         //12/12 
         private void reordenarVetor(string resultado, string[] vetCalculo)
         {
@@ -249,8 +306,7 @@ namespace Calculadora
                 string resultado = (valorUM / valorDois).ToString();
                 gravarHistorico(vetCalculo, resultado);
                 reordenarVetor(resultado, vetCalculo);
-            }
-            
+            }    
         }
 
         private void limparAcumulo()
@@ -258,7 +314,6 @@ namespace Calculadora
             nroDigitado = "";
             this.txtResultado.Clear();
         }
-
     }
 }
 

@@ -93,6 +93,7 @@
             this.btnPotencia.TabIndex = 6;
             this.btnPotencia.Text = "x²";
             this.btnPotencia.UseVisualStyleBackColor = true;
+            this.btnPotencia.Click += new System.EventHandler(this.btnPotencia_Click);
             // 
             // btnRaizQuadrada
             // 
@@ -102,6 +103,7 @@
             this.btnRaizQuadrada.TabIndex = 7;
             this.btnRaizQuadrada.Text = "Raiz quadr x";
             this.btnRaizQuadrada.UseVisualStyleBackColor = true;
+            this.btnRaizQuadrada.Click += new System.EventHandler(this.btnRaizQuadrada_Click);
             // 
             // btnDivide
             // 
@@ -300,6 +302,7 @@
             this.btnHistorico.TabIndex = 26;
             this.btnHistorico.Text = "Histórico";
             this.btnHistorico.UseVisualStyleBackColor = true;
+            this.btnHistorico.Click += new System.EventHandler(this.btnHistorico_Click);
             // 
             // btnFracao
             // 
@@ -309,6 +312,7 @@
             this.btnFracao.TabIndex = 5;
             this.btnFracao.Text = "¹/x";
             this.btnFracao.UseVisualStyleBackColor = true;
+            this.btnFracao.Click += new System.EventHandler(this.btnFracao_Click);
             // 
             // txtOperacaoEmCurso
             // 
