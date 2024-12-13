@@ -127,8 +127,15 @@ namespace Calculadora
             preencherTxtOperacaoEmCurso();
         }
 
+
         private void btnResultado_Click(object sender, EventArgs e)
         {
+            operacao = "=";
+            preencherElementosDoVetor(operacao, vetCalculo);
+            preencherTxtOperacaoEmCurso();
+            // preencherTxtOperacaoEmCurso();
+
+            /*
             if(vetCalculo[0] != "" & vetCalculo[1] != "" & nroDigitado != "")
             {
                 vetCalculo[2] = nroDigitado;
@@ -136,24 +143,25 @@ namespace Calculadora
                 this.txtOperacaoEmCurso.Text = vetCalculo[0];
                 limparAcumulo();
             }
+            */
         }
 
         //12/12 - noite
         private void preencherElementosDoVetor(string operacao, string[] vetCalculo)
         {
-            if (vetCalculo[0] == "")
+            if (vetCalculo[0] == "" & nroDigitado != "" & operacao != "=")
             {
                 vetCalculo[0] = nroDigitado;
                 vetCalculo[1] = operacao;
                 limparAcumulo();
             }
-            else if (vetCalculo[2] == "")
+            else if (vetCalculo[0] != "" & vetCalculo[2] == "" & operacao != "=")
             {
-                if (nroDigitado == "")
+                if (nroDigitado == "") //& operacao != "="
                 {
                     vetCalculo[1] = operacao;
                 }
-                else
+                else if (nroDigitado != "") //& operacao != "="
                 {
                     vetCalculo[2] = nroDigitado;
                     vetCalculo[3] = operacao;
@@ -161,6 +169,38 @@ namespace Calculadora
                     limparAcumulo();
                 }
             }
+            else if(vetCalculo[0] != "" & vetCalculo[1] != "" & operacao == "=")
+            {
+                if (nroDigitado != "") //& operacao != "="
+                {
+                    vetCalculo[2] = nroDigitado;
+                    vetCalculo[3] = operacao;
+                    calcularOperacaoEmCurso(vetCalculo);
+                    limparAcumulo();
+                    vetCalculo[1] = "";
+                }
+            
+                /*
+            else if (nroDigitado != "" & operacao == "=")
+            {
+                //this.txtOperacaoEmCurso.Text = "tst igual";
+                vetCalculo[2] = nroDigitado;
+                vetCalculo[3] = operacao;
+                //this.txtOperacaoEmCurso.Text = $"{vetCalculo[0]} {vetCalculo[1]} {vetCalculo[2]} = ";
+                calcularOperacaoEmCurso(vetCalculo);
+                limparAcumulo();
+                vetCalculo[1] = "";
+
+
+
+                /*
+                vetCalculo[2] = nroDigitado;
+                vetCalculo[3] = operacao;
+                calcularOperacaoEmCurso(vetCalculo);
+                limparAcumulo();
+                */
+            }
+            
         }
 
         //12/12 - noite
@@ -192,11 +232,10 @@ namespace Calculadora
                     break;
 
                 case "/":
-                    validaDivisaoPorZero(vetCalculo, valorDois);
+                    validaDivisaoPorZero(vetCalculo, valorUM, valorDois);
                     break;
             }
             operacao = "";
-
         }
 
         //12/12 - noite
@@ -228,7 +267,7 @@ namespace Calculadora
             string tst = this.txtOperacaoEmCurso.Text;
         }
 
-        private void validaDivisaoPorZero(string[] vetCalculo, double valorDois)
+        private void validaDivisaoPorZero(string[] vetCalculo, double valorUM, double valorDois)
         {
             if (valorDois == 0) {
                 string resultado = "Não é possível divisão por zero";
