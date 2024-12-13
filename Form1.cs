@@ -141,16 +141,28 @@ namespace Calculadora
         private void btnFracao_Click(object sender, EventArgs e)
         {
             operacao = "1/x";
+            preencherElementosDoVetor(operacao, vetCalculo);
+            preencherTxtOperacaoEmCurso();
+            limparVetor();
+            limparAcumulo();
         }
 
         private void btnPotencia_Click(object sender, EventArgs e)
         {
             operacao = "x²";
+            preencherElementosDoVetor(operacao, vetCalculo);
+            preencherTxtOperacaoEmCurso();
+            limparVetor();
+            limparAcumulo();
         }
 
         private void btnRaizQuadrada_Click(object sender, EventArgs e)
         {
             operacao = "raiz";
+            preencherElementosDoVetor(operacao, vetCalculo);
+            preencherTxtOperacaoEmCurso();
+            limparVetor();
+            limparAcumulo();
         }
         private void btnHistorico_Click(object sender, EventArgs e)
         {
@@ -168,7 +180,6 @@ namespace Calculadora
                 {
                     calcularOperacaoEmCurso(vetCalculo);
                 }
-
                 limparAcumulo();
             }
             else if (vetCalculo[0] != "" & vetCalculo[2] == "" & operacao != "=")
@@ -176,6 +187,10 @@ namespace Calculadora
                 if (nroDigitado == "") //& operacao != "="
                 {
                     vetCalculo[1] = operacao;
+                    if (operacao == "1/x" || operacao == "x²" || operacao == "raiz")
+                    {
+                        calcularOperacaoEmCurso(vetCalculo);
+                    }
                 }
                 else if (nroDigitado != "") //& operacao != "="
                 {
@@ -203,7 +218,10 @@ namespace Calculadora
         {
             double valorUM = Convert.ToDouble(vetCalculo[0]);
             string operacaoEmCurso = vetCalculo[1];
-            double valorDois = Convert.ToDouble(vetCalculo[2]);
+            if(vetCalculo[2] != "")
+            {
+                double valorDois = Convert.ToDouble(vetCalculo[2]);
+            }
             string resultado = "";
 
             switch (operacaoEmCurso)
@@ -245,10 +263,14 @@ namespace Calculadora
 
                 case "x²":
                     resultado = Math.Pow(valorUM, 2).ToString();
+                    gravarHistorico(vetCalculo, resultado);
+                    reordenarVetor(resultado, vetCalculo);
                     break;
 
                 case "raiz":
                     resultado = Math.Sqrt(valorUM).ToString();
+                    gravarHistorico(vetCalculo, resultado);
+                    reordenarVetor(resultado, vetCalculo);
                     break;
             }
             operacao = "";
@@ -313,6 +335,13 @@ namespace Calculadora
         {
             nroDigitado = "";
             this.txtResultado.Clear();
+        }
+        private void limparVetor()
+        {
+            vetCalculo[0] = "";
+            vetCalculo[1] = "";
+            vetCalculo[2] = "";
+            vetCalculo[3] = "";
         }
     }
 }
