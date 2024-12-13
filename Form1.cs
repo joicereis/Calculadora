@@ -106,7 +106,7 @@ namespace Calculadora
             preencherTxtOperacaoEmCurso();
         }
 
-        //12/12 - noite
+        //12/12
         private void btnSubtrai_Click(object sender, EventArgs e)
         {
             operacao = "-";
@@ -127,26 +127,14 @@ namespace Calculadora
             preencherTxtOperacaoEmCurso();
         }
 
-
         private void btnResultado_Click(object sender, EventArgs e)
         {
             operacao = "=";
             preencherElementosDoVetor(operacao, vetCalculo);
             preencherTxtOperacaoEmCurso();
-            // preencherTxtOperacaoEmCurso();
-
-            /*
-            if(vetCalculo[0] != "" & vetCalculo[1] != "" & nroDigitado != "")
-            {
-                vetCalculo[2] = nroDigitado;
-                calcularOperacaoEmCurso(vetCalculo);
-                this.txtOperacaoEmCurso.Text = vetCalculo[0];
-                limparAcumulo();
-            }
-            */
         }
 
-        //12/12 - noite
+        //12/12
         private void preencherElementosDoVetor(string operacao, string[] vetCalculo)
         {
             if (vetCalculo[0] == "" & nroDigitado != "" & operacao != "=")
@@ -179,31 +167,10 @@ namespace Calculadora
                     limparAcumulo();
                     vetCalculo[1] = "";
                 }
-            
-                /*
-            else if (nroDigitado != "" & operacao == "=")
-            {
-                //this.txtOperacaoEmCurso.Text = "tst igual";
-                vetCalculo[2] = nroDigitado;
-                vetCalculo[3] = operacao;
-                //this.txtOperacaoEmCurso.Text = $"{vetCalculo[0]} {vetCalculo[1]} {vetCalculo[2]} = ";
-                calcularOperacaoEmCurso(vetCalculo);
-                limparAcumulo();
-                vetCalculo[1] = "";
-
-
-
-                /*
-                vetCalculo[2] = nroDigitado;
-                vetCalculo[3] = operacao;
-                calcularOperacaoEmCurso(vetCalculo);
-                limparAcumulo();
-                */
-            }
-            
+            }          
         }
 
-        //12/12 - noite
+        //12/12
         private void calcularOperacaoEmCurso(string[] vetCalculo)
         {
             double valorUM = Convert.ToDouble(vetCalculo[0]);
@@ -238,7 +205,7 @@ namespace Calculadora
             operacao = "";
         }
 
-        //12/12 - noite
+        //12/12
         private void gravarHistorico(string[] vetCalculo, string resultado)
         {
             string ultimaOperacao = $"{vetCalculo[0]} {vetCalculo[1]} {vetCalculo[2]} = {resultado}";
@@ -246,7 +213,7 @@ namespace Calculadora
             listaHistorico.Add(ultimaOperacao);
         }
 
-        //12/12 - noite
+        //12/12 
         private void reordenarVetor(string resultado, string[] vetCalculo)
         {
             vetCalculo[0] =  resultado;
